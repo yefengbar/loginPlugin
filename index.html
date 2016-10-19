@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>login</title>
+	</head>
+	<body>
+		<p>测试地址：http://localhost:3000/</p>
+		<input type="button" id="login" value="登录" />
+		<script src="http://libs.baidu.com/jquery/1.7.2/jquery.min.js"></script>
+		<script type="text/javascript" src="js/loginPlus.js?v=@@hash"></script>
+		<script type="text/javascript">
+			Union.config({"logAction":2,"regAction":2});
+			/*可配置的参数
+			autokk: 0,//是否自动分配kk号0：不分配，1分配
+			qqLogId:11715896,//qq登录id
+			qqlogType: 'qqlogin',//qq登录请求地址
+			qqlogCallback:encodeURIComponent(location.href),//qq登录回调地址
+			logAction: 0, //0刷新，1跳转，2回调
+			logedCallUrl: location.href,//登录成功后跳转地址
+			regAction: 0, //0刷新，1跳转，2回调（显示保存面板）
+			saveInfo: 'http://web.7k7k.com/api/7k7ktxt.php?', //保存账号请求地址
+			refer: 3841 //注册的参数 
+			*/
+			$('#login').bind('click', function() {
+				var timer = setInterval(function() {
+					if(window["Union"]) {
+						clearInterval(timer);
+						Union.open();
+					}
+				}, 200);
+			});
+		</script>
+	</body>
+</html>
