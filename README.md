@@ -1,6 +1,6 @@
 # loginPlugin
 login plugin of company
-# 可配置参数： 
+# 可配置参数
 > autokk: 0 //是否自动分配kk号0：不分配，1分配  
 > qqLogId:11715896 //qq登录id  
 > qqlogType: qqlogin //qq登录请求地址  
@@ -12,13 +12,13 @@ login plugin of company
 > refer: 3841 //注册的参数 
 
 # 使用方法： 
-* 1·自定义配置登陆： 
+* 1·自定义配置登陆\n
 > `Union.config\(\{logAction:2,regAction:2\}\)`
-* 2·打开登陆框： 
+* 2·打开登陆框\n
 > `Union.open\(\)`
 
-# 新增加配置： 
+# 新增加配置
 > showSave:1 //是否显示保存账号面板
 
-# 新增加回调方法： 
+# 新增加回调方法
 > Union.open\(callback\) //回调动作函数
