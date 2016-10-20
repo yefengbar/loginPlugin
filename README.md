@@ -13,7 +13,7 @@ login plugin of company
 
 # 使用方法： 
 > 1·自定义配置登陆： 
-> Union.config({"logAction":2,"regAction":2})
+> Union.config({logAction:2,regAction:2})
 > 2·打开登陆框： 
 > Union.open()
 
