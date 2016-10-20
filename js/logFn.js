@@ -7,11 +7,11 @@ var Union = window.Union || {};
 var _czc = _czc || [];
 	_czc.push(["_setAccount", "30055902"]);
 Union.logFn = {
-	getPassUrl: 'http://web.7k7k.com/user/find_passport.php',
-	getkkUrl:'http://zc.7k7k.com/get_pre_kk?callback=',
+	getPassUrl: './user/find_passport.php',
+	getkkUrl:'./get_pre_kk?callback=',
 	chkNameUrl:'/source/core_Post.php',
 	doLogUrl:'/source/Post.php',
-	cssUrl:'http://n.7k7kimg.cn/uploads/cdn/api/loginPlus/css/reset.min.css?v7k7k1',
+	cssUrl:'./cdn/api/loginPlus/css/reset.min.css?v7k7k1',
 	logDomId:'#union',
 	doMain:'web.7k7k.com',
 	remName:0,
@@ -42,7 +42,7 @@ Union.logFn = {
 		logedCallUrl: location.href,//登录成功后跳转地址
 		regAction: 0, //0刷新，1跳转，2回调
 		showSave:1,//是否显示保存账号面板
-		saveInfo: 'http://web.7k7k.com/api/7k7ktxt.php?', //保存账号请求地址
+		saveInfo: './api/7k7ktxt.php?', //保存账号请求地址
 		refer: 3841 //注册的参数
 	},
 	toggleUi: function(index) {
@@ -127,7 +127,7 @@ Union.logFn = {
 	'						<div class="un_rem">'+
 	'							<span class="un_check"></span>'+
 	'							<span class="un_lable">记住登录账号</span>'+
-	'							<a href="http://web.7k7k.com/user/find_passport.php" target="_blank" class="un_lose_pass">忘记密码?</a>'+
+	'							<a href="./user/find_passport.php" target="_blank" class="un_lose_pass">忘记密码?</a>'+
 	'							<div class="clear"></div>'+
 	'						</div>'+
 	'						<div class="un_btns">'+
@@ -154,7 +154,7 @@ Union.logFn = {
 	'						<div class="un_tips repass"></div>'+
 	'						<div class="un_rem">'+
 	'							<span class="un_check"></span>'+
-	'							<a href="http://www.7k7k.com/html/duty.htm" target="_blank" class="un_lose_pass">已阅读《用户服务协议》</a>'+
+	'							<a href="./html/duty.htm" target="_blank" class="un_lose_pass">已阅读《用户服务协议》</a>'+
 	'							<div class="clear"></div>'+
 	'						</div>'+
 	'						<div class="un_btns">'+
@@ -188,7 +188,7 @@ Union.logFn = {
 	'						</div>'+
 	'						<div class="saves">'+
 	'							<p class="tipst">温馨提示</p>'+
-	'							<p class="tipTxt">为抵御盗号风险，90%的用户都会选择<a target="_blank" href="http://web.7k7k.com/user/index.php">设置密码保护</a></p>'+
+	'							<p class="tipTxt">为抵御盗号风险，90%的用户都会选择<a target="_blank" href="./user/index.php">设置密码保护</a></p>'+
 	'						</div>'+
 	'					</div>'+
 	'					<div class="clear"></div>'+
@@ -433,10 +433,10 @@ Union.logFn = {
 		var _this = $(Union.logFn.logDomId+' .un_mod_log .un_rem .un_check');
 		if(!isRem){
 			_this.addClass('no');
-			_this.attr({"style":"background:url(http://n.7k7kimg.cn/uploads/cdn/api/loginPlus/img/chk_0.png) no-repeat;"})
+			_this.attr({"style":"background:url(./cdn/api/loginPlus/img/chk_0.png) no-repeat;"})
 		}else{
 			_this.removeClass('no');
-			_this.attr({"style":"background:url(http://n.7k7kimg.cn/uploads/cdn/api/loginPlus/img/chk_1.png) no-repeat;"})
+			_this.attr({"style":"background:url(./cdn/api/loginPlus/img/chk_1.png) no-repeat;"})
 		}
 	},
 	getUserInfo:function(options){
@@ -455,11 +455,11 @@ Union.logFn = {
 	},
 	qqLog:function(){
 		this.thirdLogin({
-            url: 'http://8.7k7k.com/Connect2.1/example/oauth/index.php?referer=http%3a%2f%2fweb.7k7k.com%2fapi%2f'+Union.logFn.defaults.qqlogType+'.php%3faid%3d11457205%26refer%3d'+Union.logFn.defaults.qqlogCallback,
+            url: './Connect2.1/example/oauth/index.php?referer=%2fapi%2f'+Union.logFn.defaults.qqlogType+'.php%3faid%3d11457205%26refer%3d'+Union.logFn.defaults.qqlogCallback,
             w: 454,
             h: 320
         });
-        _czc.push(['_trackEvent','web7k通行证','QQ登录','QQ登录','','']);
+        _czc.push(['_trackEvent','web通行证','QQ登录','QQ登录','','']);
 	},
 	thirdLogin:function(opt){
         var times = 0,
@@ -529,7 +529,7 @@ Union.logFn = {
 	setCookie: function(c_name, value, expiredays) {
 		var exdate = new Date();
 		exdate.setDate(exdate.getDate() + expiredays);
-		document.cookie = c_name + "=" + escape(value) + ";path=/;domain=web.7k7k.com" + ((expiredays == null) ? "" : ";expires=" + exdate.toGMTString());
+		document.cookie = c_name + "=" + escape(value) + ";path=/;domain=*" + ((expiredays == null) ? "" : ";expires=" + exdate.toGMTString());
 	},
 	myDate: function(timestamp) {
 		d = new Date(timestamp);
@@ -555,7 +555,7 @@ Union.logFn = {
 		});
 		$(Union.logFn.logDomId+' #un_name').bind('blur', function() {
 			if($(this).val() == ''){
-				$(this).val('用户名/邮箱/KK号');
+				$(this).val('用户名/邮箱');
 			}
 		});
 	}
