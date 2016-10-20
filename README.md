@@ -20,5 +20,5 @@ login plugin of company
 # 新增加配置： 
 > showSave:1 //是否显示保存账号面板
 
-# 新增加方法： 
+# 新增加回调方法： 
 > Union.open(callback) //回调动作函数
