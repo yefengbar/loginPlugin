@@ -13,7 +13,7 @@ Union.logFn = {
 	doLogUrl:'/source/Post.php',
 	cssUrl:'./cdn/api/loginPlus/css/reset.min.css?v7k7k1',
 	logDomId:'#union',
-	doMain:'web.7k7k.com',
+	doMain:'web.****.com',
 	remName:0,
 	isCheck:0,
 	callBacks:'',
