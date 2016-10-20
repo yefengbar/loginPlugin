@@ -12,7 +12,7 @@ login plugin of company
 > refer: 3841 //注册的参数 
 
 # 使用方法
-*1·自定义配置登陆<br>
+* 1·自定义配置登陆<br>
 >`Union.config({logAction:2,regAction:2})`<br>
 * 2·打开登陆框<br>
 >`Union.open()`
