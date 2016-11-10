@@ -22,3 +22,5 @@ login plugin of company
 
 # 新增加回调方法
 > `Union.open(callback)` //回调动作函数
+# 新增防沉迷验证
+> gVaildIdcard:0
