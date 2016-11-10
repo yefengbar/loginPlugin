@@ -122,6 +122,10 @@ gulp.task('server', function() {
   gulp.watch(['*.html', 'css/**/*.css', 'js/**/*.js'], {cwd: 'dist'}, reload);
 });
 gulp.task('do', ['jsmin','cssmin','htmlmv','imgmin']);
+gulp.task('wache', function () {
+    gulp.watch('css/*.css', ['cssmin']);
+    gulp.watch('js/*.js', ['jsmin']);
+});
 gulp.task('help', function(){
 	
 	//console.log("	jschk-------------------------------[检查js文件]");

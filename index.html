@@ -3,14 +3,20 @@
 	<head>
 		<meta charset="utf-8" />
 		<title>login</title>
+		<link rel="stylesheet" type="text/css" href="css/reset.min.css"/>
 	</head>
 	<body>
-		<p>测试地址login组件</p>
-		<input type="button" id="login" value="登录" />
+		<table border="0" cellspacing="10" cellpadding="0" width="300" align="center" height="150">
+			<tr><th>·测试登录，上线时请修改domain</th></tr>
+			<tr><td>·gulp测试地址：localhost:3000</td></tr>
+			<tr><td>·hbuilder测试地址：http://127.0.0.1:8020/</td></tr>
+			<tr><td align="center"><input type="button" id="login" value="　　登 录　　" width="100" height="35" /></td></tr>
+		</table>
 		<script src="http://libs.baidu.com/jquery/1.7.2/jquery.min.js"></script>
-		<script type="text/javascript" src="js/loginPlus.js?v=@@hash"></script>
+		<script type="text/javascript" src="js/logFn.min.js"></script>
 		<script type="text/javascript">
-			Union.config({"logAction":2,"regAction":2});
+		var Union = window.Union || {};
+			Union.logFn.config({"logAction":2,"regAction":2});
 			/*可配置的参数
 			autokk: 0,//是否自动分配kk号0：不分配，1分配
 			qqLogId:11715896,//qq登录id
@@ -26,7 +32,7 @@
 				var timer = setInterval(function() {
 					if(window["Union"]) {
 						clearInterval(timer);
-						Union.open();
+						Union.logFn.open();
 					}
 				}, 200);
 			});
