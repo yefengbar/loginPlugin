@@ -22,5 +22,10 @@ login plugin of company
 
 # 新增加回调方法
 > `Union.open(callback)` //回调动作函数
+
 # 新增防沉迷验证
-> gVaildIdcard:0
+> `isCardId`
+> 号码正确的话返回1和相关信息
+> `{'status':1,'info':'省份|出生日期|性别'}`
+> 号码不正确的情况
+> `{'status':0,'info':'返回相关错误信息'}`
