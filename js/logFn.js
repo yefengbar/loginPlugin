@@ -13,8 +13,6 @@
 		chkNameUrl: 'http://web.7k7k.com/source/core_Post.php',
 		doLogUrl: 'http://web.7k7k.com/source/Post.php',
 		cssUrl: 'http://n.7k7kimg.cn/uploads/cdn/api/loginPlus/css/logFn.min.css?v=0.2.0',
-		jsUrl: 'http://n.7k7kimg.cn/uploads/cdn/api/loginPlus/js/idcard.min.js?v=0.2.0',
-		gbUrl: 'http://n.7k7kimg.cn/uploads/cdn/api/loginPlus/js/GB2260.js?v=0.2.0',
 		idcardUrl:'http://web.7k7k.com/api/get7k_fcm.php',
 		logDomId: '#union',
 		doMain:'web.7k7k.com',
@@ -376,18 +374,12 @@
 							if(Union.logFn.defaults.isVaildIdcard == 1 && Union.logFn.gVaildIdcard == 1){
 								if(rrname && /^[\u4e00-\u9fa5]{2,12}$/.test(rrname)) {
 									if(rrnum && /\d{18}|\d{15}/.test(rrnum)) {
-										runReg()
-//										var Validator = new IDValidator();
-//										if(Validator.isValid(rrnum)){
-//											var ages = Validator.getInfo(rrnum).birth.substring(0,4),yearss = new Date().getFullYear();
-//											if(yearss-ages >=18){
-//												runReg()
-//											}else{
-//												$('.un_mod_reg .un_tips.rrnum').html(Union.logFn.msg[13]).addClass('no');
-//											}
-//										}else{
-//											$('.un_mod_reg .un_tips.rrnum').html(Union.logFn.msg[12]).addClass('no');
-//										}
+										var sta = Union.logFn.isCardID(rrnum);
+										if(sta.status == 1){
+											runReg()
+										}else{
+											$('.un_mod_reg .un_tips.rrnum').html(sta.info).addClass('no');
+										}
 									}else{
 										$('.un_mod_reg .un_tips.rrnum').html(Union.logFn.msg[12]).addClass('no');
 									}
@@ -476,6 +468,55 @@
 							});
 			}
 		},
+		isCardID:function(sId) {
+				var aCity={11:"北京",12:"天津",13:"河北",14:"山西",15:"内蒙古",21:"辽宁",22:"吉林",23:"黑龙江",31:"上海",32:"江苏",33:"浙江",34:"安徽",35:"福建",36:"江西",37:"山东",41:"河南",42:"湖北",43:"湖南",44:"广东",45:"广西",46:"海南",50:"重庆",51:"四川",52:"贵州",53:"云南",54:"西藏",61:"陕西",62:"甘肃",63:"青海",64:"宁夏",65:"新疆",71:"台湾",81:"香港",82:"澳门",91:"国外"};
+					var iSum = 0,info = "ok",rinfo = {};
+					if(sId.length == 15){
+						sId = ch15_18(sId);
+					}
+					if(!/^\d{17}(\d|x)$/i.test(sId)){
+						info =  "你输入的身份证长度或格式错误";
+					}
+					sId = sId.replace(/x$/i, "a");
+					if(aCity[parseInt(sId.substr(0, 2))] == null){
+						info =  "你的身份证地区非法";
+					}
+					sBirthday = sId.substr(6, 4) + "-" + Number(sId.substr(10, 2)) + "-" + Number(sId.substr(12, 2));
+					var d = new Date(sBirthday.replace(/-/g, "/"));
+					var dn = new Date();
+					if(sBirthday != (d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate())){
+						info =  "身份证上的出生日期非法";
+					}
+					if(dn.getFullYear()-parseInt(sId.substr(6,4)) < 18){
+						info =  "未满18周岁";	
+					}
+					for(var i = 17; i >= 0; i--){
+						iSum += (Math.pow(2, i) % 11) * parseInt(sId.charAt(17 - i), 11);
+					}
+					if(iSum % 11 != 1){
+						info =  "你输入的身份证号非法";
+					}
+					if(info == 'ok'){
+						var infos = aCity[parseInt(sId.substr(0,2))]+"|"+sBirthday+"|"+(sId.substr(16,1)%2?"男":"女");
+						rinfo.status = 1;
+						rinfo.info = infos
+					}else{
+						rinfo.status = 0;
+						rinfo.info = info
+					}
+					return rinfo;
+				function ch15_18(num){
+					var arrInt = new Array(7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2);
+					var arrCh = new Array('1', '0', 'X', '9', '8', '7', '6', '5', '4', '3', '2');
+					var nTemp = 0, i;
+					num = num.substr(0, 6) + '19' + num.substr(6, num.length - 6);
+					for(i = 0; i < 17; i ++){
+						nTemp += num.substr(i, 1) * arrInt[i];
+					}
+					num += arrCh[nTemp % 11];
+					return num;
+				}
+			},
 		showName: function() {
 			var udom = $('.logs .un_logName'),
 				tdom = $('.logs .un_logInfo');
