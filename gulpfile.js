@@ -165,7 +165,7 @@ gulp.task('help', function(){
 	console.log("	> "+k('htmlmv')+"：[添加html版本号并压缩]")
 	console.log("	> "+k('server')+"：[web浏览]")
 	console.log("	> "+k('b-ver')+"：[自动语义版本号]") 
-	console.log("	         eg："+m('gulp b-ver --env-xxx'))	
+	console.log("	         eg："+m('gulp b-ver -xxx'))	
 	console.log("	         xxx是可选参数：")
 	console.log("	         "+m('major')+"：主要升级")
 	console.log("	         "+m('minor')+"：次要升级")
@@ -179,14 +179,11 @@ gulp.task('help', function(){
 //auto change version and add git tags
 //**************************************
 //major'主要升级 'minor'次要升级 'patch 补丁
-var knownOptions = {
-  string: 'env',
-  default: { env: process.env.NODE_ENV || 'patch' }
-};
-var options = minimist(process.argv.slice(2), knownOptions);
+
 gulp.task('b-ver', function () {
+	var bumptype = process.argv.slice(3).toLocaleString().substring(1) || 'patch';
   return gulp.src(['./package.json'])
-    .pipe(bump({type:options.env}).on('error', gutil.log))
+    .pipe(bump({type:bumptype}).on('error', gutil.log))
     .pipe(gulp.dest('./'));
 });
 
