@@ -21,6 +21,8 @@ var gulp = require('gulp'),
 	var git = require('gulp-git');
 	var minimist = require('minimist');
 	var fs = require('fs');
+	//colors of console
+	var col = require('colors-cli');
 	//add rightInfo for compress file
 	var banner = ['/**',
 	  ' * <%= pkg.name %> - <%= pkg.description %>',
@@ -148,21 +150,33 @@ gulp.task('watch', function () {
     gulp.watch('js/*.js', ['jsmin']);
 });
 gulp.task('help', function(){
-	
+	var k = col.cyan;
+	var m = col.yellow;
+	console.log("\n")
+	console.log("	==============================================================")
 	//console.log("	jschk-------------------------------[检查js文件]");
-	console.log("	jsmin-------------------------------[压缩js文件]");
-	console.log("	doless------------------------------[编译less文件]")
-	console.log("	cssmin------------------------------[压缩css文件，添加url版本号]")
-	console.log("	imgmin------------------------------[压缩img文件]")
-	console.log("	imgsome-----------------------------[压缩修改过的img文件]")
-	console.log("	htmlmin-----------------------------[压缩html文件]")
-	console.log("	htmlv-------------------------------[添加html版本号]")
-	console.log("	htmlmv------------------------------[添加html版本号并压缩]")
-	console.log("	server------------------------------[web浏览]")
+	console.log("	> "+k('jsmin')+"：[压缩js文件]")
+	console.log("	> "+k('doless')+"：[编译less文件]")
+	console.log("	> "+k('cssmin')+"：[压缩css文件，添加url版本号]")
+	console.log("	> "+k('imgmin')+"：[压缩img文件]")
+	console.log("	> "+k('imgsome')+"：[压缩修改过的img文件]")
+	console.log("	> "+k('htmlmin')+"：[压缩html文件]")
+	console.log("	> "+k('htmlv')+"：[添加html版本号]")
+	console.log("	> "+k('htmlmv')+"：[添加html版本号并压缩]")
+	console.log("	> "+k('server')+"：[web浏览]")
+	console.log("	> "+k('b-ver')+"：[自动语义版本号]") 
+	console.log("	         eg："+m('gulp b-ver --env-xxx'))	
+	console.log("	         xxx是可选参数：")
+	console.log("	         "+m('major')+"：主要升级")
+	console.log("	         "+m('minor')+"：次要升级")
+	console.log("	         "+m('patch')+"：补丁")
+	console.log("	> "+k('release')+"：[自动语义版本号上传到git并且生成一个tag]")
+	console.log("	==============================================================")
+	console.log("\n")
 });
 
 //**************************************
-//auto add version and git tags
+//auto change version and add git tags
 //**************************************
 //major'主要升级 'minor'次要升级 'patch 补丁
 var knownOptions = {
@@ -170,22 +184,22 @@ var knownOptions = {
   default: { env: process.env.NODE_ENV || 'patch' }
 };
 var options = minimist(process.argv.slice(2), knownOptions);
-gulp.task('bump-version', function () {
+gulp.task('b-ver', function () {
   return gulp.src(['./package.json'])
     .pipe(bump({type:options.env}).on('error', gutil.log))
     .pipe(gulp.dest('./'));
 });
 
-gulp.task('commit-changes', function () {
+gulp.task('g-commit', function () {
   return gulp.src('.')
     .pipe(git.commit('[Prerelease] Bumped version number'), {args: '-a'});
 });
 
-gulp.task('push-changes', function (cb) {
+gulp.task('g-push', function (cb) {
   git.push('origin', 'master', cb);
 });
 
-gulp.task('create-new-tag', function (cb) {
+gulp.task('g-tag', function (cb) {
   var version = getPackageJsonVersion();
   git.tag(version, 'Created Tag for version: ' + version, function (error) {
     if (error) {
@@ -202,15 +216,15 @@ gulp.task('create-new-tag', function (cb) {
 
 gulp.task('release', function (callback) {
   runSequence(
-    'bump-version',
-    'commit-changes',
-    'push-changes',
-    'create-new-tag',
+    'b-ver',
+    'g-commit',
+    'g-push',
+    'g-tag',
     function (error) {
       if (error) {
         console.log(error.message);
       } else {
-        console.log('RELEASE FINISHED SUCCESSFULLY');
+        console.log('Release finished successfully!');
       }
       callback(error);
     });
