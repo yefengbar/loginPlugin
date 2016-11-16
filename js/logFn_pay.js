@@ -3,7 +3,7 @@
  * date:2016-4-19 11:05
  * version:0.2.1
  * ======充值中心登录======
- * 主要修复代码：
+ * 主要修复代码:12
  * chkNameUrl，doLogUrl的地址
  * ajax的jsonp类型
  * doMain的地址

@@ -1,4 +1,6 @@
 var gulp = require('gulp'),
+	header = require('gulp-header'),
+	pkg = require('./package.json'),
 	uglify = require('gulp-uglify'),
 	rename = require("gulp-rename"),
 	cssmini = require('gulp-minify-css'),
@@ -12,11 +14,27 @@ var gulp = require('gulp'),
 	less = require('gulp-less'),
 	browsersync = require('browser-sync'),
 	reload = browsersync.reload;
-
+	//git version commit
+	var runSequence = require('run-sequence');
+	var bump = require('gulp-bump');
+	var gutil = require('gulp-util');
+	var git = require('gulp-git');
+	var minimist = require('minimist');
+	var fs = require('fs');
+	//add rightInfo for compress file
+	var banner = ['/**',
+	  ' * <%= pkg.name %> - <%= pkg.description %>',
+	  ' * @author : <%= pkg.author %>',
+	  ' * @version : v<%= pkg.version %>',
+	  ' * @website : <%= pkg.homepage %>',
+	  ' * @createtime : <%= pkg.createtime %>',
+	  ' * @edittime :'+new Date().toLocaleString('chinese',{hour12:false}),
+	  ' **/',''].join('\n');
+	//gulp task
 gulp.task('jsmin', function() {
 	gulp.src('js/*.js')
 		.pipe(uglify({
-			mangle: true,
+			mangle: {"toplevel":true,"eval":true},
 			compress: true
 		}))
 		.pipe(rename({
@@ -25,6 +43,7 @@ gulp.task('jsmin', function() {
 		    suffix: ".min",
 		    extname: ".js"
 		  }))
+		.pipe(header(banner,{pkg:pkg}))
 		.pipe(gulp.dest('dist/js'));
 });
 gulp.task('cssmin', function () {
@@ -48,6 +67,7 @@ gulp.task('cssmin', function () {
 		    suffix: ".min",
 		    extname: ".css"
 		  }))
+        .pipe(header(banner,{pkg:pkg}))
         .pipe(gulp.dest('dist/css'));
 });
 gulp.task('imgmin', function () {
@@ -119,10 +139,11 @@ gulp.task('server', function() {
       baseDir: 'dist'
     }
   });
-  gulp.watch(['*.html', 'css/**/*.css', 'js/**/*.js'], {cwd: 'dist'}, reload);
+  gulp.watch(['*.html', 'css/*.css', 'js/*.js'], {cwd: 'dist'}, reload);
+  
 });
 gulp.task('do', ['jsmin','cssmin','htmlmv','imgmin']);
-gulp.task('wache', function () {
+gulp.task('watch', function () {
     gulp.watch('css/*.css', ['cssmin']);
     gulp.watch('js/*.js', ['jsmin']);
 });
@@ -138,4 +159,59 @@ gulp.task('help', function(){
 	console.log("	htmlv-------------------------------[添加html版本号]")
 	console.log("	htmlmv------------------------------[添加html版本号并压缩]")
 	console.log("	server------------------------------[web浏览]")
+});
+
+//**************************************
+//auto add version and git tags
+//**************************************
+//major'主要升级 'minor'次要升级 'patch 补丁
+var knownOptions = {
+  string: 'env',
+  default: { env: process.env.NODE_ENV || 'patch' }
+};
+var options = minimist(process.argv.slice(2), knownOptions);
+gulp.task('bump-version', function () {
+  return gulp.src(['./package.json'])
+    .pipe(bump({type:options.env}).on('error', gutil.log))
+    .pipe(gulp.dest('./'));
+});
+
+gulp.task('commit-changes', function () {
+  return gulp.src('.')
+    .pipe(git.commit('[Prerelease] Bumped version number'), {args: '-a'});
+});
+
+gulp.task('push-changes', function (cb) {
+  git.push('origin', 'master', cb);
+});
+
+gulp.task('create-new-tag', function (cb) {
+  var version = getPackageJsonVersion();
+  git.tag(version, 'Created Tag for version: ' + version, function (error) {
+    if (error) {
+      return cb(error);
+    }
+    git.push('origin', 'master', {args: '--tags'}, cb);
+  });
+
+  function getPackageJsonVersion () {
+    // 这里直接解析 json 文件而不是使用 require，这是因为 require 会缓存多次调用，这会导致版本号不会被更新掉
+    return JSON.parse(fs.readFileSync('./package.json', 'utf8')).version;
+  };
+});
+
+gulp.task('release', function (callback) {
+  runSequence(
+    'bump-version',
+    'commit-changes',
+    'push-changes',
+    'create-new-tag',
+    function (error) {
+      if (error) {
+        console.log(error.message);
+      } else {
+        console.log('RELEASE FINISHED SUCCESSFULLY');
+      }
+      callback(error);
+    });
 });
