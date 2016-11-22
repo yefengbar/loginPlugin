@@ -24,14 +24,14 @@ var gulp = require('gulp'),
 	//colors of console
 	var col = require('colors-cli');
 	//add rightInfo for compress file
-	var banner = ['/**',
+	var banner = ['/************************************************',
 	  ' * <%= pkg.name %> - <%= pkg.description %>',
 	  ' * @author : <%= pkg.author %>',
 	  ' * @version : v<%= pkg.version %>',
 	  ' * @website : <%= pkg.homepage %>',
 	  ' * @createtime : <%= pkg.createtime %>',
 	  ' * @edittime :'+new Date().toLocaleString('chinese',{hour12:false}),
-	  ' **/',''].join('\n');
+	  ' ********************************************************/',''].join('\n');
 	//gulp task
 gulp.task('jsmin', function() {
 	gulp.src('js/*.js')
@@ -39,6 +39,7 @@ gulp.task('jsmin', function() {
 			mangle: {"toplevel":true,"eval":true},
 			compress: true
 		}))
+		.pipe()
 		.pipe(rename({
 		    dirname: "/",
 		    //basename: "base",
