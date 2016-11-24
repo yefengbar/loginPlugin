@@ -138,7 +138,7 @@
 		init: function() {
 			if(location.host == this.doMain) {
 				this.addCSS(Union.logFn.cssUrl);
-				logHtml = '<IFRAME id=union_mask src="about:blank" frameBorder=no style="display:none"></IFRAME>' +
+				logHtml = '<IFRAME id=union_mask src="about:blank" frameBorder=no style="display:none;;filter:alpha(opacity=50);"></IFRAME>' +
 					'		<div class="union_warp" id="union" style="display:none">' +
 					'			<div class="un_con">' +
 					'				<div class="un_tit">' +

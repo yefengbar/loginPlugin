@@ -1,7 +1,12 @@
 /**
  * auther:yefengbar.com
- * date:2016-11-10 15:00
+ * date:2016-4-19 11:05
  * version:0.2.1
+ * ======充值中心登录======
+ * 主要修复代码:12
+ * chkNameUrl，doLogUrl的地址
+ * ajax的jsonp类型
+ * doMain的地址
  * */
 ;(function($,undefined) {
 	Union = window.Union || {};
@@ -10,13 +15,12 @@
 	Union.logFn = {
 		getPassUrl: 'http://web.7k7k.com/user/find_passport.php',
 		getkkUrl: 'http://zc.7k7k.com/get_pre_kk?callback=',
-		chkNameUrl: 'http://web.7k7k.com/source/core_Post.php',
-		doLogUrl: 'http://web.7k7k.com/source/Post.php',
+		chkNameUrl: "http://web.7k7k.com/source/Post_pay.php",
+		doLogUrl: "http://web.7k7k.com/source/Post_pay.php",
 		cssUrl: 'http://n.7k7kimg.cn/uploads/cdn/api/loginPlus/css/logFn.min.css?v=0.2.0',
 		idcardUrl:'http://web.7k7k.com/api/get7k_fcm.php',
 		logDomId: '#union',
-		doMain:'web.7k7k.com',
-//		doMain: 'localhost:3000', //修改的时候注意端口号
+		doMain: 'localhost:3000', //修改的时候注意端口号
 		remName: 0,
 		isCheck: 0,
 		callBacks: '',
@@ -133,7 +137,7 @@
 		init: function() {
 			if(location.host == this.doMain) {
 				this.addCSS(Union.logFn.cssUrl);
-				logHtml = '<IFRAME id=union_mask src="about:blank" frameBorder=no style="display:none;filter:alpha(opacity=50);"></IFRAME>' +
+				logHtml = '<IFRAME id=union_mask src="about:blank" frameBorder=no style="display:none;;filter:alpha(opacity=50);"></IFRAME>' +
 					'		<div class="union_warp" id="union" style="display:none">' +
 					'			<div class="un_con">' +
 					'				<div class="un_tit">' +
@@ -319,7 +323,7 @@
 							"auto": ch,
 							"formtype": "index_log"
 						},
-						dataType: "json",
+						dataType: "jsonp",
 						success: function(data) {
 							if(data.status == 1) {
 								switch(Union.logFn.defaults.logAction) {
@@ -415,7 +419,7 @@
 									"formtype": "registerform",
 									"from": Union.logFn.defaults.refer
 								},
-								dataType: "json",
+								dataType: "jsonp",
 								success: function(data) {
 									if(data.status == 1) {
 										$.extend(Union.logFn.userInfo, {
@@ -554,7 +558,7 @@
 					"name": "name",
 					"param": name
 				},
-				dataType: "json",
+				dataType: "jsonp",
 				//async: "false",
 				success: function(data) {
 					if(data.status == "y") {

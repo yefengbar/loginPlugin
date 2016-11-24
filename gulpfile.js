@@ -39,7 +39,6 @@ gulp.task('jsmin', function() {
 			mangle: {"toplevel":true,"eval":true},
 			compress: true
 		}))
-		.pipe()
 		.pipe(rename({
 		    dirname: "/",
 		    //basename: "base",
